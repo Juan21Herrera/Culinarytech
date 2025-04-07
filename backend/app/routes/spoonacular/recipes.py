@@ -28,9 +28,6 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
     # 1. Search the recipe in the database
     local_recipes = db.query(Recipe).filter(Recipe.title.ilike(f"%{title}%")).limit(number).all()
 
-    if local_recipes:
-        return local_recipes
-
 
 # 2. If not found in the database, search in the Spoonacular API
 
@@ -66,13 +63,13 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
             ingredients="",
             cached=True
         )
-
         # Add the new recipe to the database
         db.add(new_recipe)
         saved_recipes.append(new_recipe)
         
     db.commit()
-    return saved_recipes
+    all_recipes = {recipe.spoonacular_id: recipe for recipe in local_recipes + saved_recipes}
+    return list(all_recipes.values())
 
 
 
