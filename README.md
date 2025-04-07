@@ -1,1 +1,3 @@
-Documentation for Culinarytech project
+# Documentation for Culinarytech project
+
+Hi there!

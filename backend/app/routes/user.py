@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.models.db_models import User as UserModel
+from app.models.db_users import User as UserModel
 from app.schemas import User
 from app.db.database import get_db
 from sqlalchemy.orm import Session
-from app.models import db_models
+from app.models import db_users
 
 router = APIRouter(
     prefix="/user",
@@ -19,14 +19,14 @@ def welcome_root():
 # Get all users
 @router.get("/")
 def get_users(db: Session = Depends(get_db)):
-    data = db.query(db_models.User).all()
+    data = db.query(db_users.User).all()
     return data
 
 # Create a new user
 @router.post("/")
 def create_user(user: User, db: Session = Depends(get_db)):
     # Verify if user email already registered
-    existing_user = db.query(db_models.User).filter(db_models.User.email == user.email).first()
+    existing_user = db.query(db_users.User).filter(db_users.User.email == user.email).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     
@@ -44,7 +44,7 @@ def create_user(user: User, db: Session = Depends(get_db)):
 # Get User by ID
 @router.post("/{user_id}")
 def get_user(user_id: int, db: Session = Depends(get_db)):
-    user = db.query(db_models.User).filter(db_models.User.id == user_id).first()
+    user = db.query(db_users.User).filter(db_users.User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
