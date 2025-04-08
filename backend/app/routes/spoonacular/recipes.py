@@ -47,13 +47,13 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
         raise HTTPException(status_code=404,detail="Recipe not found")
 
     # 3. Save the recipes to the database
-    api_recipes = []
+    saved_recipes = []
     for recipe in results:
         # Check if the recipe already exists in the database
         existing_recipe = db.query(Recipe).filter_by(spoonacular_id=recipe["id"]).first()
 
         if existing_recipe:
-            api_recipes.append(existing_recipe)
+            saved_recipes.append(existing_recipe)
             continue
 
         new_recipe = Recipe(
@@ -66,7 +66,8 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
         )
         # Add the new recipe to the database
         db.add(new_recipe)
-        api_recipes.append(new_recipe)
+        saved_recipes.append(new_recipe)
+
         
     db.commit()
 
