@@ -29,6 +29,7 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
     local_recipes = db.query(Recipe).filter(Recipe.title.ilike(f"%{title}%")).limit(number).all()
 
 
+
 # 2. If not found in the database, search in the Spoonacular API
 
     response = requests.get(
@@ -38,7 +39,7 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
     
 
     if response.status_code != 200:
-        raise HTTPException(status_code=500,detail="Internal Server Error")
+        raise HTTPException(status_code=500,detail="Error fetching data from API")
     data = response.json()
     results = data.get("results", [])
 
@@ -68,9 +69,9 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
         saved_recipes.append(new_recipe)
         
     db.commit()
+
     all_recipes = {recipe.spoonacular_id: recipe for recipe in local_recipes + saved_recipes}
     return list(all_recipes.values())
-
 
 
 
