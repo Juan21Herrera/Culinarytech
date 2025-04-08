@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react"; // Íconos para mostrar/ocultar contraseña
 import { FcGoogle } from "react-icons/fc"; // Ícono oficial de Google
 
+// This code defines a simple register form using React.
+// It uses the useState hook to manage the form state, and handles changes and submission of the form.
+// The form includes fields for email and password, and a submit button. The styling is done using Tailwind CSS classes.
+
 export default function RegisterForm() {
+
     const [form, setForm] = useState({
         username: '',
         email: '',
@@ -10,7 +14,6 @@ export default function RegisterForm() {
         confirmPassword: ''
     });
 
-    const [showPassword, setShowPassword] = useState(false);
 
     const [message, setMessage] = useState(null);
 
@@ -97,25 +100,15 @@ export default function RegisterForm() {
                         <div className="relative">
                             <input
                                 id="RegisterPass"
-                                type={showPassword ? "text" : "password"}
+                                type="password"
                                 name="password"
                                 value={form.password}
                                 onChange={handleChange}
                                 className="border border-gray-300 rounded w-full p-2 pr-10 bg-transparent focus:ring-2 focus:ring-purple-500 outline-none"
                                 required
                             />
-                            {/* Botón para mostrar/ocultar contraseña */}
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
-                            >
-                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                            </button>
                         </div>
                     </div>
-
-                    
 
                     <button
                         type="submit"
@@ -127,7 +120,7 @@ export default function RegisterForm() {
 
                 <aside className="mt-4 text-sm text-gray-600 text-center">
                     Already have an account?
-                    <a href="/" className="text-purple-600 hover:text-purple-700 font-semibold ml-1">Log in</a>
+                    <a href="/Login" className="text-purple-600 hover:text-purple-700 font-semibold ml-1">Log in</a>
 
                     <div className="flex items-center my-6">
                     <div className="flex-grow border-t border-gray-300"></div>
