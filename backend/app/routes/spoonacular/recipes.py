@@ -28,8 +28,6 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
     # 1. Search the recipe in the database
     local_recipes = db.query(Recipe).filter(Recipe.title.ilike(f"%{title}%")).limit(number).all()
 
-    if local_recipes:
-        return local_recipes
 
 
 # 2. If not found in the database, search in the Spoonacular API
@@ -41,7 +39,7 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
     
 
     if response.status_code != 200:
-        raise HTTPException(status_code=500,detail="Internal Server Error")
+        raise HTTPException(status_code=500,detail="Error fetching data from API")
     data = response.json()
     results = data.get("results", [])
 
@@ -49,13 +47,13 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
         raise HTTPException(status_code=404,detail="Recipe not found")
 
     # 3. Save the recipes to the database
-    saved_recipes = []
+    api_recipes = []
     for recipe in results:
         # Check if the recipe already exists in the database
         existing_recipe = db.query(Recipe).filter_by(spoonacular_id=recipe["id"]).first()
 
         if existing_recipe:
-            saved_recipes.append(existing_recipe)
+            api_recipes.append(existing_recipe)
             continue
 
         new_recipe = Recipe(
@@ -69,11 +67,12 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
 
         # Add the new recipe to the database
         db.add(new_recipe)
-        saved_recipes.append(new_recipe)
+        api_recipes.append(new_recipe)
         
     db.commit()
-    return saved_recipes
 
+    all_recipes = {recipe.spoonacular_id: recipe for recipe in local_recipes + api_recipes}
+    return list(all_recipes.values())
 
 
 
