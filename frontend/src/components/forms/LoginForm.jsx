@@ -36,7 +36,7 @@ export default function LoginForm() {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                className="border rounded w-full p-2"
+                className="border border-gray-300 rounded w-full p-2 bg-transparent focus:ring-2 focus:ring-purple-500 outline-none"
                 />
             </div>
 
@@ -48,7 +48,7 @@ export default function LoginForm() {
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                className="border rounded w-full p-2"
+                className="border border-gray-300 rounded w-full p-2 bg-transparent focus:ring-2 focus:ring-purple-500 outline-none"
                 />
             </div>
 
@@ -74,7 +74,7 @@ export default function LoginForm() {
             <p className="flex justify-between mb-2">
                 <a href="/forgot-password" className="text-purple-600 hover:text-purple-700 font-semibold text-start">Forgot Password?</a>
                 <p>Don't have an account?
-                <a href="/register" className="text-purple-600 hover:text-purple-700 font-semibold text-end"> Register</a>
+                <a href="/Register" className="text-purple-600 hover:text-purple-700 font-semibold text-end"> Register</a>
                 </p>
             </p>
             <p className='text-center text-gray-500 pt-4'>
