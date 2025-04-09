@@ -4,17 +4,18 @@ from app.schemas import User
 from app.db.database import get_db
 from sqlalchemy.orm import Session
 from app.models import db_users
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 router = APIRouter(
     prefix="/user",
-    tags=["user"]
+    tags=["user"]   
 )
 
 
-# Welcome route
-@router.get("/welcome")
-def welcome_root():
-    return {"Hello": "World"}
+def hash_password(password: str) -> str:
+    return pwd_context.hash(password)
 
 # Get all users
 @router.get("/")
@@ -23,7 +24,7 @@ def get_users(db: Session = Depends(get_db)):
     return data
 
 # Create a new user
-@router.post("/")
+@router.post("/register")
 def create_user(user: User, db: Session = Depends(get_db)):
     # Verify if user email already registered
     existing_user = db.query(db_users.User).filter(db_users.User.email == user.email).first()
@@ -34,7 +35,7 @@ def create_user(user: User, db: Session = Depends(get_db)):
     new_user = UserModel (
         name=user.name,
         email=user.email,
-        password=user.password
+        password=hash_password(user.password)
     )
     db.add(new_user)
     db.commit()
