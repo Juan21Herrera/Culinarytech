@@ -2,16 +2,10 @@ import LoginForm from '../../components/forms/LoginForm';
 // import Navbar from '@/components/Navbar';
 // import Footer from '@/components/Footer';
 
-function Login() {
+export default function Login() {
     return (
-        <>
-            {/* <Navbar /> */}
-            <main className="flex justify-center items-center min-h-screen bg-purple-50">
-                <LoginForm />
-            </main>
-            {/* <Footer /> */}
-        </>
+        <main className="min-h-screen flex items-center justify-center bg-gray-100">
+            <LoginForm />
+        </main>
     );
 }
-
-export default Login;
