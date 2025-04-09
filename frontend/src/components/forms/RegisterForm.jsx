@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react"; // Íconos para mostrar/ocultar contraseña
-import { FcAbout, FcGoogle } from "react-icons/fc"; // Ícono oficial de Google
+import { FcGoogle } from "react-icons/fc"; // Ícono oficial de Google
+
+// This code defines a simple register form using React.
+// It uses the useState hook to manage the form state, and handles changes and submission of the form.
+// The form includes fields for email and password, and a submit button. The styling is done using Tailwind CSS classes.
 
 export default function RegisterForm() {
+
     const [form, setForm] = useState({
         name: '',
         email: '',
@@ -10,7 +14,6 @@ export default function RegisterForm() {
         confirmPassword: ''
     });
 
-    const [showPassword, setShowPassword] = useState(false);
 
     const [message, setMessage] = useState(null);
 
@@ -39,7 +42,8 @@ export default function RegisterForm() {
                 body: JSON.stringify({
                     name: form.name,
                     email: form.email,
-                    password: form.password,
+
+                    password: form.password
                 })
             });
 
@@ -59,11 +63,13 @@ export default function RegisterForm() {
     };
 
     return (
+
         <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-[#4B2E1E] to-[#D4A373] flex items-center justify-center">
             {/* Contenedor del formulario */}
             <div className="bg-[#F5E1C8] text-[#2D1B0E] border border-[#C19A6B] p-8 rounded-xl shadow-lg">
                 <h2 className="text-2xl text-[#2D1B0E] font-semibold mb-4 text-center">Sign Up</h2>
 
+                {/* Formulario */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label htmlFor="RegisterName" className="block text-sm text-gray-700 p-2">Username</label>
@@ -73,7 +79,9 @@ export default function RegisterForm() {
                             name="name"
                             value={form.name}
                             onChange={handleChange}
+
                             className="border rounded-2xl p border-gray-300 rounded w-full p-2 bg-white/35 focus:ring-2 focus:ring-[#C19A6B] outline-none"
+
                             required
                         />
                     </div>
@@ -86,7 +94,9 @@ export default function RegisterForm() {
                             name="email"
                             value={form.email}
                             onChange={handleChange}
+
                             className="border rounded-2xl border-gray-300 rounded w-full p-2 bg-white/35 focus:ring-2 focus:ring-[#C19A6B] outline-none"
+
                             required
                         />
                     </div>
@@ -96,10 +106,11 @@ export default function RegisterForm() {
                         <div className="relative">
                             <input
                                 id="RegisterPass"
-                                type={showPassword ? "text" : "password"}
+                                type="password"
                                 name="password"
                                 value={form.password}
                                 onChange={handleChange}
+
                                 className="border rounded-2xl border-gray-300 rounded w-full p-2 pr-10 bg-white/35 focus:ring-2 focus:ring-[#C19A6B] outline-none"
                                 required
                             />
@@ -132,19 +143,22 @@ export default function RegisterForm() {
                             >
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>
+
                         </div>
                     </div>
 
-
                     <button
                         type="submit"
+
                         className="w-full cursor-pointer bg-[#D4A373] hover:bg-[#C19A6B] text-[#2D1B0E] font-semibold py-2 px-4 rounded-lg rounded transition duration-300">
+
                         Sign Up
                     </button>
                 </form>
 
                 <aside className="mt-4 text-sm text-gray-600 text-center">
                     Already have an account?
+
                     <a href="/login" className="text-[#2D1B0E] cursor-pointer hover:text-[#C19A6B] font-semibold ml-1">Log in</a>
 
                     <div className="flex items-center my-6">
@@ -159,8 +173,12 @@ export default function RegisterForm() {
                     </button>
                     <p className='text-center text-gray-500 pt-4'>
                         By signing up, you agree to our <a href="/terms" className="text-[#2D1B0E] hover:text-[#C19A6B] font-semibold">Terms of Service</a> and <a href="/privacy" className="text-[#2D1B0E] hover:text-[#C19A6B] font-semibold">Privacy Policy</a>.
+
                     </p>
                 </aside>
+
+                
+                
             </div>
         </div>
     );
