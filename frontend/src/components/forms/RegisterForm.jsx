@@ -12,15 +12,19 @@ export default function RegisterForm() {
 
     const [showPassword, setShowPassword] = useState(false);
 
+
     const [message, setMessage] = useState(null);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
 
         // Validaciones básicas
         if (!form.name || !form.email || !form.password || !form.confirmPassword) {
@@ -31,6 +35,7 @@ export default function RegisterForm() {
             setMessage({ type: 'error', text: 'Passwords do not match' });
             return;
         }
+
 
         try {
             const response = await fetch('http://127.0.0.1:8000/user/register', {
@@ -43,7 +48,9 @@ export default function RegisterForm() {
                 })
             });
 
+
             const data = await response.json();
+
 
             if (response.ok) {
                 setMessage({ type: 'success', text: 'Registration successful! Redirecting...' });
@@ -78,6 +85,7 @@ export default function RegisterForm() {
                         />
                     </div>
 
+
                     <div>
                         <label htmlFor="RegisterEmail" className="block text-sm text-gray-700 p-2">Email</label>
                         <input
@@ -90,6 +98,7 @@ export default function RegisterForm() {
                             required
                         />
                     </div>
+
 
                     <div>
                         <label htmlFor="RegisterPass" className="block text-sm text-gray-700 p-2">Password</label>
@@ -113,10 +122,11 @@ export default function RegisterForm() {
                         </div>
                     </div>
 
+
                     <div>
                         <label htmlFor="ConfirmPass" className="block text-sm text-gray-700 p-2">Confirm Password</label>
                         <div className="relative">
-                            <input 
+                            <input
                                 type={showPassword ? "text" : "password"}
                                 name="confirmPassword"
                                 id="ConfirmPass"
@@ -135,7 +145,6 @@ export default function RegisterForm() {
                         </div>
                     </div>
 
-
                     <button
                         type="submit"
                         className="w-full cursor-pointer bg-[#D4A373] hover:bg-[#C19A6B] text-[#2D1B0E] font-semibold py-2 px-4 rounded-lg rounded transition duration-300">
@@ -143,15 +152,18 @@ export default function RegisterForm() {
                     </button>
                 </form>
 
+
                 <aside className="mt-4 text-sm text-gray-600 text-center">
                     Already have an account?
                     <a href="/login" className="text-[#2D1B0E] cursor-pointer hover:text-[#C19A6B] font-semibold ml-1">Log in</a>
+
 
                     <div className="flex items-center my-6">
                         <div className="flex-grow border-t border-black/30"></div>
                         <span className="mx-4 text-gray-500">OR</span>
                         <div className="flex-grow border-t border-black/30"></div>
                     </div>
+
 
                     <button className="flex cursor-pointer items-center bg-white justify-center w-full border border-gray-300 p-2 rounded-lg shadow-sm hover:bg-gray-100 transition">
                         <FcGoogle size={24} className="mr-2" />
