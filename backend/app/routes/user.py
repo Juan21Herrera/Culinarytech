@@ -10,7 +10,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 router = APIRouter(
     prefix="/user",
-    tags=["user"]   
+    tags=["Users"]   
 )
 
 
@@ -71,4 +71,4 @@ def update_user(user_id: int, user: User, db: Session = Depends(get_db)):
     existing_user.password = user.password
     db.commit()
     db.refresh(existing_user)
-    return {"message": "User upated successfully"}
+    return {"message": "User updated successfully"}
