@@ -1,8 +1,10 @@
 import React from 'react';
+import AuthCard from '../ui/AuthCard';
 
 const ForgotForm = () => {
     return (
-        <div>
+        <AuthCard>
+            <div>
             <h2 className='text-2xl font-bold text-gray-800 mb-6'>Forgot Password</h2>
             <form className='space-y-4'>
                 <input 
@@ -18,6 +20,7 @@ const ForgotForm = () => {
                 </button>
             </form>
         </div>
+        </AuthCard>
     );
 };
 
