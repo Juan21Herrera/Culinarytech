@@ -52,5 +52,6 @@ class Ingredient(Base):
     __tablename__ = "ingredients"
 
     id = Column(Integer, primary_key=True, index=True)
+    spoonacular_id = Column(Integer, unique=True, index=True)
     name = Column(String, index=True)
     image = Column(String, index=True)
