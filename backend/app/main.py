@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import uvicorn
 from app.routes import user
-from app.routes.spoonacular import recipes, ingredients
+from app.routes.spoonacular import recipes, ingredients, products, menu, wine
 from app.db.database import Base, engine
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -12,9 +12,14 @@ create_tables()
 
 
 app = FastAPI()
+
 app.include_router(user.router)
 app.include_router(recipes.router)
 app.include_router(ingredients.router)
+app.include_router(products.router)
+app.include_router(menu.router)
+app.include_router(wine.router)
+
 
 # Welcome route
 @app.get("/")

@@ -11,7 +11,7 @@ load_dotenv()
 
 router = APIRouter(
     prefix="/recipes",
-    tags=["Spoonacular"],
+    tags=["Recipes"],
     responses={
         404: {"description": "Recipe not found"},
         500: {"description": "Internal Server Error"},

@@ -47,6 +47,7 @@ class RecipesWithSimilarSchema(BaseModel):
 
 class Ingredient(BaseModel):
     id: int
+    spoonacular_id: int
     name: str
     image: str
 
