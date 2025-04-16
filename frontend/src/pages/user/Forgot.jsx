@@ -1,4 +1,4 @@
-import ForgotForm from '../../components/auth/FrogotForm';
+import ForgotForm from '../../components/auth/ForgotForm';
 import AuthCard from '../../components/ui/AuthCard';
 import React from 'react';
 
