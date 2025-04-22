@@ -5,3 +5,5 @@ SQLAlchemy
 python-dotenv
 requests
 passlib[bcrypt]
+python-multipart
+python-jose[cryptography]

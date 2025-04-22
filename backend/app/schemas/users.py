@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 # User Model (Class)
@@ -10,3 +10,18 @@ class User(BaseModel):
     email: str
     password: str
     created_at: datetime = datetime.now()
+
+    model_config = {
+        "from_attributes": True
+    }
+
+# schema of User Registration
+class UserCreate(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+
+# Schema of User Login
+class UserLogin(BaseModel):
+    email: str
+    password: str   

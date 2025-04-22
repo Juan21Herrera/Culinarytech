@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.models.db_users import User as UserModel
-from app.schemas import User
+from app.schemas.users import User, UserLogin, UserCreate
 from app.db.database import get_db
 from sqlalchemy.orm import Session
 from app.models import db_users
 from passlib.context import CryptContext
+from app.routes.auth import create_access_token, verify_password, hash_password
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -12,10 +13,6 @@ router = APIRouter(
     prefix="/user",
     tags=["Users"]   
 )
-
-
-def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
 
 # Get all users
 @router.get("/")
@@ -25,7 +22,7 @@ def get_users(db: Session = Depends(get_db)):
 
 # Create a new user
 @router.post("/register")
-def create_user(user: User, db: Session = Depends(get_db)):
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
     # Verify if user email already registered
     existing_user = db.query(db_users.User).filter(db_users.User.email == user.email).first()
     if existing_user:
@@ -41,6 +38,20 @@ def create_user(user: User, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return {"message": "User created successfully"}
+
+# Login user
+@router.post("/login")
+def login_user(user_login: UserLogin, db: Session = Depends(get_db)):
+    user = db.query(UserModel).filter(UserModel.email == user_login.email).first()
+
+    if not user or not verify_password(user_login.password, user.password):
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+    
+    token = create_access_token(data={"sub": user.email})
+    return {"access_token": token, "token_type": "bearer"}
 
 # Get User by ID
 @router.post("/{user_id}")

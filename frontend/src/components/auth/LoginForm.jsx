@@ -1,17 +1,12 @@
 import { useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
-
-// This code defines a simple login form using React. It uses the useState hook to manage the form state, and handles changes and submission of the form. The form includes fields for email and password, and a submit button. The styling is done using Tailwind CSS classes.
-
-
-
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm() {
     const [form, setForm] = useState({
         email: '',
         password: ''
     });
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,22 +15,46 @@ export default function LoginForm() {
         )
     };
 
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle login logic here
-        console.log('Logging in with:', form);
+    
+        try {
+            const response = await fetch('http://localhost:8000/user/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(form),
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert(`Error: ${errorData.detail}`);
+                return;
+            }
+    
+            const data = await response.json();
+            console.log('Login exitoso. Token:', data.access_token);
+    
+            // Guardar token (ejemplo en localStorage)
+            localStorage.setItem('token', data.access_token);
+    
+            // Redirigir o actualizar UI
+            alert('Login exitoso!');
+            navigate("/");
+    
+        } catch (error) {
+            console.error('Error en login:', error);
+            alert('Hubo un problema al intentar iniciar sesión.');
+        }
     };
-
-
+    
     return (
-        <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-[#4B2E1E] to-[#D4A373] flex items-center justify-center">
-            <div className="bg-[#F5E1C8] text-[#2D1B0E] border border-[#C19A6B] p-8 rounded-xl shadow-lg">
-                <h2 className="text-2xl text-[#2D1B0E] font-semibold mb-4 text-center">Login</h2>
-
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
+        <div className="w-full">
+            <h2 className="text-2xl text-[#2D1B0E] font-semibold mb-4 text-center">Login</h2>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
                         <label htmlFor="LoginEmail" className="block text-sm text-gray-700 p-2">Email</label>
                         <input
                             id="LoginEmail"
@@ -43,7 +62,7 @@ export default function LoginForm() {
                             name="email"
                             value={form.email}
                             onChange={handleChange}
-                            className="border rounded-2xl p border-gray-300 rounded w-full p-2 bg-white/35 focus:ring-2 focus:ring-[#C19A6B] outline-none"
+                            className="border rounded p border-gray-300 w-full p-2 bg-white/50 focus:ring-2 focus:ring-[#C19A6B] outline-none"
                             required
                         />
                     </div>
@@ -56,7 +75,7 @@ export default function LoginForm() {
                             name="password"
                             value={form.password}
                             onChange={handleChange}
-                            className="border rounded-2xl border-gray-300 rounded w-full p-2 bg-white/35 focus:ring-2 focus:ring-[#C19A6B] outline-none"
+                            className="border rounded border-gray-300 w-full p-2 bg-white/50 focus:ring-2 focus:ring-[#C19A6B] outline-none"
                             required
                         />
                     </div>  
@@ -73,7 +92,7 @@ export default function LoginForm() {
 
                     <button
                         type="submit"
-                        className="w-full cursor-pointer bg-[#D4A373] hover:bg-[#C19A6B] text-[#2D1B0E] font-semibold py-2 px-4 rounded-lg rounded transition duration-300">
+                        className="w-full cursor-pointer bg-[#D4A373] hover:bg-[#C19A6B] text-[#2D1B0E] font-semibold py-2 px-4 rounded-lg rounded transition duration-300 ">
                         Sign In
                     </button>
                 </form>
@@ -102,10 +121,7 @@ export default function LoginForm() {
                         By signing in, you agree to our <a href="/terms" className="text-[#2D1B0E] hover:text-[#C19A6B] font-semibold">Terms of Service</a> and <a href="/privacy" className="text-[#2D1B0E] hover:text-[#C19A6B] font-semibold">Privacy Policy</a>.
                     </p>
                 </aside>
-
-
             </div>
-        </div>
     );
 
 
