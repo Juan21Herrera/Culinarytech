@@ -62,7 +62,6 @@ def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_
             image=recipe["image"],
             spoonacular_id=recipe["id"],
             instructions="",
-            ingredients="",
             cached=True
         )
         # Add the new recipe to the database

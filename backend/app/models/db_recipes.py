@@ -12,7 +12,6 @@ class Recipe(Base):
     image = Column(String, index=True)
     spoonacular_id = Column(Integer, unique=True, index=True)
     instructions = Column(String, index=True)
-    ingredients = Column(String, index=True)
     cached = Column(Boolean, default=True)
     
     #Relationships with ingredients
