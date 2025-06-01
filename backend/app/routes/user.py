@@ -50,8 +50,14 @@ def login_user(user_login: UserLogin, db: Session = Depends(get_db)):
             detail="User not found"
         )
     
-    token = create_access_token(data={"sub": user.email})
-    return {"access_token": token, "token_type": "bearer"}
+    token = create_access_token(data={"sub": user.email, "name": user.name})
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "name": user.name,
+        "email": user.email
+    }
+
 
 # Get User by ID
 @router.post("/{user_id}")

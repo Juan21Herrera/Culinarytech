@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from app.models.db_recipes import Ingredient as IngredientModel
 from app.schemas.recipe import Ingredient as IngredientSchema
+from app.schemas.recipe import IngredientSubstitute as IngredientSubstituteSchema
+from app.schemas.recipe import IngredientInfo as IngredientInfoSchema
 from app.db.database import get_db
 from dotenv import load_dotenv
 import os, requests
@@ -74,10 +76,58 @@ def search_ingredients(
 
 #     ------------------      Endpoint get parse ingredient information | resume ingredient information (calories, carbs, fat, protein, etc.)     ------------------ 
 
+@router.get("/info/{ingredient_id}", response_model=IngredientInfoSchema)
+def get_ingredient_info(ingredient_id: int):
+    """
+    Get nutritional information for a specific ingredient by ID.
+    """
+    response = requests.get(
+        f"{BASE_URL}/food/ingredients/{ingredient_id}/information",
+        params={"apiKey": API_KEY, "amount": 100, "unit": "g"},
+    )
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=500, detail="Failed to fetch ingredient info from API")
+
+    data = response.json()
+
+    return {
+        "id": data.get("id"),
+        "name": data.get("name"),
+        "image": data.get("image"),
+        "calories": data.get("nutrition", {}).get("nutrients", [])[0].get("amount"),
+        "carbs": next((n.get("amount") for n in data.get("nutrition", {}).get("nutrients", []) if n.get("name") == "Carbohydrates"), None),
+        "fat": next((n.get("amount") for n in data.get("nutrition", {}).get("nutrients", []) if n.get("name") == "Fat"), None),
+        "protein": next((n.get("amount") for n in data.get("nutrition", {}).get("nutrients", []) if n.get("name") == "Protein"), None),
+    }
+
+#     ------------------      Endpoint to get substitutes for ingredients | get substitutes for a list of ingredients (e.g. gluten-free, dairy-free, etc.)      
+
+@router.get("/substitutes/{ingredient_name}", response_model=IngredientSubstituteSchema)
+def get_ingredient_substitutes(ingredient_name: str):
+    response = requests.get(
+        f"{BASE_URL}/food/ingredients/substitutes",
+        params={"ingredientName": ingredient_name, "apiKey": API_KEY},
+    )
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=500, detail="Failed to fetch substitutes from API")
+
+    data = response.json()
+
+    if not data.get("substitutes"):
+        raise HTTPException(status_code=404, detail="No substitutes found for this ingredient")
+
+    return {
+        "ingredient": ingredient_name,
+        "substitutes": data.get("substitutes", []),
+        "message": data.get("message", "")
+    }
+
 
 
 #     ------------------      Endpoint convert amounts | convert amounts (grams, ounces, cups, etc.)     ------------------      
 
 #    Endpoint Compute glycemic index & load | compute glycemic index (low, medium, high) and total glycemic load for a list of ingredients (total & per serving)
 
-#     ------------------      Endpoint to get substitutes for ingredients | get substitutes for a list of ingredients (e.g. gluten-free, dairy-free, etc.)       
+ 

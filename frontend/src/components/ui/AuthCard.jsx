@@ -11,7 +11,7 @@ const AuthCard = ({ children, showRightSection = true }) => {
             style={{ backgroundImage: showRightSection ? "url('/food.jpg')" : 'none' }}>
             {/* Izquierda */}
             <section
-                className='backdrop-blur-sm bg-gradient-to-br from-[#FFFACD] to-[#D4ECDD] opacity-92 flex items-center justify-center'
+                className='bg-gradient-to-br from-[#FFFACD] to-[#D4ECDD] opacity-92 backdrop-blur-[30px] flex items-center justify-center'
                 aria-label='Authentication Form'
             >
 
