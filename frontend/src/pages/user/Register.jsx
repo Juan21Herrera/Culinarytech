@@ -1,16 +1,11 @@
 import RegisterForm from '../../components/auth/RegisterForm';
-// import Navbar from '@/components/Navbar';
-// import Footer from '@/components/Footer';
+import AuthCard from '../../components/ui/AuthCard';
 
 function Register() {
     return (
-        <>
-            {/* <Navbar /> */}
-            <main className="flex justify-center items-center min-h-screen bg-purple-50">
-                <RegisterForm />
-            </main>
-            {/* <Footer /> */}
-        </>
+        <AuthCard >
+            <RegisterForm />
+        </AuthCard>
     );
 }
 

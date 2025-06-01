@@ -54,3 +54,24 @@ class Ingredient(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+class IngredientInfo(BaseModel):
+    id: int
+    name: str
+    image: str | None = None
+    calories: float | None = None
+    carbs: float | None = None
+    fat: float | None = None
+    protein: float | None = None
+
+class IngredientSubstitute(BaseModel):
+    ingredient: str
+    substitutes: List[str]
+    message: str | None = None
+
+class RecipeRecommendation(BaseModel):
+    id: int
+    title: str
+    image: str
+    usedIngredientCount: int
+    missedIngredientCount: int

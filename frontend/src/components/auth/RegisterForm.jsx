@@ -69,9 +69,7 @@ export default function RegisterForm() {
 
 
     return (
-        <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-[#4B2E1E] to-[#D4A373] flex items-center justify-center">
-            {/* Contenedor del formulario */}
-            <div className="bg-[#F5E1C8] text-[#2D1B0E] border border-[#C19A6B] p-8 rounded-xl shadow-lg">
+            <div>
                 <h2 className="text-2xl text-[#2D1B0E] font-semibold mb-4 text-center">Sign Up</h2>
 
 
@@ -181,6 +179,5 @@ export default function RegisterForm() {
                     </p>
                 </aside>
             </div>
-        </div>
     );
 }

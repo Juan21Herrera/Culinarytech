@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Navbar from '../components/static/Navbar.jsx';
 import Footer from '../components/static/Footer.jsx';
 
@@ -14,7 +14,7 @@ export default function Home() {
         if (!searchTerm) return;
 
         try {
-            const response = await fetch(`http://localhost:8000/recipes/search/${searchTerm}?number=40`);
+            const response = await fetch(`http://localhost:8000/recipes/search/${searchTerm}?number=10`);
             if (!response.ok) {
                 throw new Error('Failed to fetch recipes');
             }
