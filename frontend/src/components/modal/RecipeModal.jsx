@@ -1,35 +1,45 @@
+import React from "react";
 
-import React from 'react';
-
-const RecipeModal = ({ recipe, onClose }) => {
+export default function RecipeModal({ recipe, onClose }) {
   if (!recipe) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-11/12 md:w-2/3 lg:w-1/2 relative">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-lg max-w-lg w-full p-6 relative overflow-y-auto max-h-[80vh]"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
-          className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl"
           onClick={onClose}
+          className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold"
+          aria-label="Cerrar modal"
         >
           &times;
         </button>
+
         <img
-          src={recipe.image || 'https://via.placeholder.com/400'}
-          alt={recipe.name}
-          className="w-full h-60 object-cover rounded-lg mb-4"
+          src={recipe.image.startsWith('http') ? recipe.image : `http://127.0.0.1:8000/${recipe.image}`}
+          alt={recipe.title}
+          className="w-full h-48 object-cover rounded-md mb-4"
         />
-        <h2 className="text-2xl font-bold mb-2">{recipe.name}</h2>
-        <h3 className="text-lg font-semibold">Ingredientes:</h3>
-        <ul className="list-disc pl-5 mb-4">
+        <h2 className="text-2xl font-semibold mb-3">{recipe.title}</h2>
+
+        <p className="font-semibold">Ingredientes:</p>
+        <ul className="list-disc list-inside mb-4">
           {recipe.ingredients?.map((item, i) => (
             <li key={i}>{item}</li>
           ))}
         </ul>
-        <h3 className="text-lg font-semibold">Instrucciones:</h3>
-        <p>{recipe.instructions || 'Instrucciones no disponibles.'}</p>
+
+        <p className="font-semibold">Tiempo de preparación:</p>
+        <p className="mb-4">{recipe.prepTime || recipe.readyInMinutes + " minutos"}</p>
+
+        <p className="font-semibold">Instrucciones:</p>
+        <p>{recipe.instructions || recipe.summary || "No hay instrucciones disponibles."}</p>
       </div>
     </div>
   );
-};
-
-export default RecipeModal;
+}

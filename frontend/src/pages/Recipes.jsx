@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import RecipeModal from "../components/modal/RecipeModal";
 import Navbar from "../components/static/Navbar";
 import Footer from "../components/static/Footer";
 
@@ -7,6 +8,8 @@ export default function Recipes() {
   const [similarRecipes, setSimilarRecipes] = useState([]);
   const [randomRecipes, setRandomRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   const handleSearchSimilar = async (e) => {
   e.preventDefault();
@@ -50,6 +53,10 @@ export default function Recipes() {
   }
 };
 
+  const openModal = (recipe) => {
+    setSelectedRecipe
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#FFFACD] to-[#D4ECDD] text-black pt-20">
       <Navbar />
@@ -84,6 +91,7 @@ export default function Recipes() {
                 <div
                   key={index}
                   className="bg-white rounded-lg shadow-lg overflow-hidden hover:scale-105 transition cursor-pointer"
+                  onClick={() => openModal(recipe)}
                 >
                   <img
                     src={recipe.image.startsWith('http') ? recipe.image : `http://127.0.0.1:8000/${recipe.image}`}
@@ -121,6 +129,7 @@ export default function Recipes() {
       <div
         key={index}
         className="bg-white rounded-lg shadow-lg overflow-hidden hover:scale-105 transition cursor-pointer"
+        onClick={() => openModal(recipe)}
       >
         <img
           src={recipe.image}
@@ -136,6 +145,11 @@ export default function Recipes() {
 </section>
       </main>
       <Footer />
+
+      <RecipeModal
+        recipe={selectedRecipe}
+        onClose={() => setSelectedRecipe(null)}
+      />
     </div>
   );
 }
