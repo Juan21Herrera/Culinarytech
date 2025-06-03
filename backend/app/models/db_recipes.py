@@ -13,6 +13,9 @@ class Recipe(Base):
     spoonacular_id = Column(Integer, unique=True, index=True)
     instructions = Column(String, index=True)
     cached = Column(Boolean, default=True)
+    meal_type = Column(String, nullable=True) 
+    diet = Column(String, nullable=True)      
+    prep_time = Column(Integer, nullable=True)
     
     #Relationships with ingredients
     ingredients = relationship("RecipeIngredient", back_populates="recipe", cascade="all, delete-orphan")
@@ -46,7 +49,8 @@ class RecipeIngredient(Base):
     unit = Column(String, nullable = True)
 
     recipe = relationship("Recipe", back_populates="ingredients")
-
+    
+    
 class Ingredient(Base):
     __tablename__ = "ingredients"
 

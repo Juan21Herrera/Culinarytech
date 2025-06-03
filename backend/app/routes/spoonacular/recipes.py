@@ -5,6 +5,7 @@ from app.schemas.recipe import RecipeSchema, SimilarRecipesSchema, RecipesWithSi
 from app.db.database import get_db
 from dotenv import load_dotenv
 import os, requests
+from typing import Optional, List
 
 # Import environment variables
 load_dotenv()
@@ -24,7 +25,38 @@ BASE_URL = "https://api.spoonacular.com"
 #     ------------------      Endpoint to get recipes for SpoonacularAPI | User search by name or ingredient         ------------------
 
 @router.get("/search/{title}", response_model=list[RecipeSchema])
-def get_recipes_by_title(title: str, number: int = 5, db: Session = Depends(get_db)):
+def get_recipes_by_title(
+    title: str,
+    number: int = 5,
+    meal_type: Optional[str] = Query(None),
+    diet: Optional[str] = Query(None),
+    prep_time: Optional[str] = Query(None),
+    exclude_ingredients: Optional[List[str]] = Query(None),
+    db: Session = Depends(get_db)
+):
+    
+    query = db.query(Recipe).filter(Recipe.title.ilike(f"%{title}%"))
+
+    if meal_type:
+        query = query.filter(Recipe.meal_type == meal_type)
+
+    if diet:
+        query = query.filter(Recipe.diet == diet)
+
+    if prep_time:
+        if prep_time == "10-60":
+            query = query.filter(Recipe.prep_time.between(10, 60))
+        elif prep_time == "60-90":
+            query = query.filter(Recipe.prep_time.between(60, 90))
+        elif prep_time == "+90":
+            query = query.filter(Recipe.prep_time > 90)
+
+    if exclude_ingredients:
+        for ing in exclude_ingredients:
+            query = query.filter(~Recipe.ingredients.any(RecipeIngredient.ingredients.ilike(f"%{ing}%")))
+
+    # Ejecutar la consulta local
+    local_recipes = query.limit(number).all()
 
     # 1. Search the recipe in the database
     local_recipes = db.query(Recipe).filter(Recipe.title.ilike(f"%{title}%")).limit(number).all()

@@ -21,8 +21,9 @@ const Navbar = () => {
         </Link>
 
         <div className="flex items-center space-x-4 hidden md:flex">
-          <Link to="/fridge" className="hover:text-purple-400 transition">What's in your fridge?</Link>
-          <Link to="/only-ingredients" className="hover:text-purple-400 transition">Ingredients</Link>  
+          <Link to="/fridge" className="hover:text-gray-500 transition">What's in your fridge?</Link>
+          <Link to="/only-ingredients" className="hover:text-gray-500 transition">Ingredients</Link>
+          <Link to="/recipes" className="hover:text-gray-500 transition">Recipes</Link>  
 
           {user ? (
             <div className="relative">
@@ -35,7 +36,8 @@ const Navbar = () => {
               </button>
 
               {isOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <div 
+                className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                   <Link
                     to="/profile"
                     className="block px-4 py-2 cursor-pointer text-sm text-gray-700 hover:bg-gray-100"
@@ -54,10 +56,14 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <button className='bg-gray-800 hover:bg-gray-500 font-semibold py-2 px-4 rounded-lg transition duration-300'>
+              <button 
+              onClick={() => navigate('/login')}
+              className='bg-gray-800 hover:bg-gray-500 font-semibold py-2 px-4 rounded-lg cursor-pointer transition duration-300'>
                 <Link to="/login" className="text-white transition">Login</Link>
               </button>
-              <button className='bg-gray-800 hover:bg-gray-500 font-semibold py-2 px-4 rounded-lg transition duration-300'>
+              <button 
+              onClick={() => navigate('/register')}
+              className='bg-gray-800 hover:bg-gray-500 font-semibold py-2 px-4 rounded-lg cursor-pointer transition duration-300'>
                 <Link to="/register" className="text-white transition">Sign up</Link>
               </button>
             </>
