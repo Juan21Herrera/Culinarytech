@@ -24,7 +24,7 @@ export default function Home() {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/recipes/search/${searchTerm}?number=10`
+        `https://culinarytech-backend.onrender.com/recipes/search/${searchTerm}?number=10`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch recipes");
