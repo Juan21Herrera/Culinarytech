@@ -8,7 +8,7 @@ const RecipesView = () => {
 
   useEffect(() => {
     // Reemplaza esta URL con la de tu backend
-    fetch('http://localhost:8000/recipes/{recipe_id}/similar_recipes')
+    fetch('https://culinarytech-backend.onrender.com/recipes/{recipe_id}/similar_recipes')
       .then((res) => res.json())
       .then((data) => setRecipes(data))
       .catch((err) => console.error(err));

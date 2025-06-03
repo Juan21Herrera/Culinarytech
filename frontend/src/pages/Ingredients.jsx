@@ -15,7 +15,7 @@ export default function Ingredients() {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/ingredient/search?query=${encodeURIComponent(searchTerm)}`);
+        `https://culinarytech-backend.onrender.com/ingredient/search?query=${encodeURIComponent(searchTerm)}`);
       const data = await response.json();
 
       const formatted = data.map((item) => ({
@@ -34,7 +34,7 @@ export default function Ingredients() {
   const handleGetInfo = async (ingredientId) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/ingredient/info/${ingredientId}`
+        `https://culinarytech-backend.onrender.com/ingredient/info/${ingredientId}`
       );
       const data = await response.json();
       console.log("Ingredient Info:", data);
@@ -48,7 +48,7 @@ export default function Ingredients() {
   const handleGetSubstitutes = async (ingredientName) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/ingredient/substitutes/${ingredientName}`
+        `https://culinarytech-backend.onrender.com/ingredient/substitutes/${ingredientName}`
       );
       const data = await response.json();
       console.log("Substitutes:", data); 

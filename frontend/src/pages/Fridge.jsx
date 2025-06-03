@@ -31,7 +31,7 @@ const Fridge = () => {
     setError('');
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8000/recipes/ingredients/', {
+      const response = await axios.get('https://culinarytech-backend.onrender.com/recipes/ingredients/', {
         params: { ingredients: ingredients.join(',') },
       });
       setRecipes(response.data);

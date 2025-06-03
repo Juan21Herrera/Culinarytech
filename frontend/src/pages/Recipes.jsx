@@ -19,7 +19,7 @@ export default function Recipes() {
   try {
     const recipeId = 1;
     const response = await fetch(
-      `http://127.0.0.1:8000/recipes/${recipeId}/similar_recipes?title=${encodeURIComponent(searchTitle)}&number=9`
+      `https://culinarytech-backend.onrender.com/recipes/${recipeId}/similar_recipes?title=${encodeURIComponent(searchTitle)}&number=9`
     );
 
     if (!response.ok) {
@@ -41,7 +41,7 @@ export default function Recipes() {
   setLoading(true);
   try {
     const randomRes = await fetch(
-      "http://localhost:8000/recipes/random?number=9"
+      "https://culinarytech-backend.onrender.com/recipes/random?number=9"
     );
     const randomData = await randomRes.json();
 
@@ -94,7 +94,7 @@ export default function Recipes() {
                   onClick={() => openModal(recipe)}
                 >
                   <img
-                    src={recipe.image.startsWith('http') ? recipe.image : `http://127.0.0.1:8000/${recipe.image}`}
+                    src={recipe.image.startsWith('http') ? recipe.image : `https://culinarytech-backend.onrender.com/${recipe.image}`}
                     alt={recipe.title}
                     className="w-full h-40 object-cover"
                   />

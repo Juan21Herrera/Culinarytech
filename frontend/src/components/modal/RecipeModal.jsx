@@ -21,7 +21,7 @@ export default function RecipeModal({ recipe, onClose }) {
         </button>
 
         <img
-          src={recipe.image.startsWith('http') ? recipe.image : `http://127.0.0.1:8000/${recipe.image}`}
+          src={recipe.image.startsWith('http') ? recipe.image : `https://culinarytech-backend.onrender.com/${recipe.image}`}
           alt={recipe.title}
           className="w-full h-48 object-cover rounded-md mb-4"
         />
