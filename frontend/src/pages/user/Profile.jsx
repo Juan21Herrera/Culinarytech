@@ -11,13 +11,9 @@ import {
 } from "react-icons/fa";
 
 export default function Profile() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
 
   if (!user) {
     return (
@@ -37,10 +33,10 @@ export default function Profile() {
             <div className="row-span-4 rounded-xl bg-white shadow-lg flex flex-col items-center justify-center p-6">
               <FaUserCircle className="size-40 text-gray-300" />
               <h2 className="mt-4 text-2xl font-bold text-center">
-                {user?.name || "Usuario"}
+                {user?.username || "Usuario"}
               </h2>
-              <p className="text-gray-600">
-                {user?.email || "Correo no disponible"}
+              <p className="text-gray-600 pt-4">
+                {user?.name || ""}
               </p>
             </div>
 
@@ -50,8 +46,10 @@ export default function Profile() {
                 Información personal
               </h3>
               <ul className="space-y-2 text-gray-700">
+                <li>Usuario: {user?.username}</li>
                 <li>Nombre: {user?.name}</li>
                 <li>Email: {user?.email}</li>
+                <li>Numero: {user?.phone}</li>
               </ul>
             </div>
 

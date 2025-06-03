@@ -7,7 +7,7 @@ from datetime import datetime
 class User(BaseModel):
     id: int
     name: str
-    email: str
+    email: EmailStr
     password: str
     created_at: datetime = datetime.now()
 
@@ -17,11 +17,14 @@ class User(BaseModel):
 
 # schema of User Registration
 class UserCreate(BaseModel):
-    name: str
+    username: str
+    full_name: str
+    phone: int
     email: EmailStr
     password: str
 
+
 # Schema of User Login
 class UserLogin(BaseModel):
-    email: str
+    email: EmailStr
     password: str   

@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import Profile from './pages/user/Profile';
 import Fridge from './pages/Fridge';
 import Ingredients from './pages/Ingredients';
+import Recipes from './pages/Recipes';
+import Shop from './pages/Shop';
 
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
       <Route path='/profile' element= {<Profile />}/>
       <Route path='/fridge' element= {<Fridge />}/>
       <Route path='/only-ingredients' element={<Ingredients />} />
+      <Route path='/recipes' element={<Recipes />}/>
+      <Route path='/shopping' element={<Shop />}/>
     </Routes>
   );
 }

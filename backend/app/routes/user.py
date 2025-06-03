@@ -23,14 +23,18 @@ def get_users(db: Session = Depends(get_db)):
 # Create a new user
 @router.post("/register")
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    # Verify if user email already registered
-    existing_user = db.query(db_users.User).filter(db_users.User.email == user.email).first()
-    if existing_user:
+    existing_email = db.query(db_users.User).filter(db_users.User.email == user.email).first()
+    existing_username = db.query(db_users.User).filter(db_users.User.username == user.username).first()
+    if existing_email:
         raise HTTPException(status_code=400, detail="Email already registered")
+    if existing_username:
+        raise HTTPException(status_code=400, detail="Username already taken")
     
-    # Create a new user
-    new_user = UserModel (
-        name=user.name,
+    # Crear nuevo usuario
+    new_user = UserModel(
+        username=user.username,
+        full_name=user.full_name,
+        phone=user.phone,
         email=user.email,
         password=hash_password(user.password)
     )
@@ -50,11 +54,14 @@ def login_user(user_login: UserLogin, db: Session = Depends(get_db)):
             detail="User not found"
         )
     
-    token = create_access_token(data={"sub": user.email, "name": user.name})
+    token = create_access_token(data={"sub": user.email, "name": user.username})
+
     return {
         "access_token": token,
         "token_type": "bearer",
-        "name": user.name,
+        "username": user.username,
+        "full_name": user.full_name,
+        "phone": user.phone,
         "email": user.email
     }
 
