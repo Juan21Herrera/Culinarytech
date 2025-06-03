@@ -192,7 +192,7 @@ def get_similar_recipes(
             spoonacular_id=spoonacular_id,
             title=title,
             image=image,
-            ingredients=""
+            ingredients=[]
         )
         db.add(recipe)
         db.commit()
