@@ -86,7 +86,7 @@ export default function Recipes() {
                   className="bg-white rounded-lg shadow-lg overflow-hidden hover:scale-105 transition cursor-pointer"
                 >
                   <img
-                    src={recipe.image}
+                    src={recipe.image.startsWith('http') ? recipe.image : `http://127.0.0.1:8000/${recipe.image}`}
                     alt={recipe.title}
                     className="w-full h-40 object-cover"
                   />

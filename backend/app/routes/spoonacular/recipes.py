@@ -140,15 +140,14 @@ def search_recipes_by_ingredients(
 @router.get("/{recipe_id}/similar_recipes", response_model=RecipesWithSimilarSchema)
 def get_similar_recipes(
     title: str = Query(..., description="Title of the recipe"),
-    number: int = Query(5, description="Number of similar recipes to return"),
+    number: int = Query(9, description="Number of similar recipes to return"),
     db: Session = Depends(get_db),
 ):
-    # 1. Search the recipe in the database
+    # Buscar receta en la base de datos
     recipe = db.query(Recipe).filter(Recipe.title.ilike(f"%{title}%")).first()
 
     if recipe:
         similar_recipes = db.query(SimilarRecipe).filter(SimilarRecipe.recipe_id == recipe.id).all()
-
         if similar_recipes:
             return RecipesWithSimilarSchema(
                 spoonacular_id=recipe.spoonacular_id,
@@ -163,31 +162,32 @@ def get_similar_recipes(
                     ) for sr in similar_recipes]
             )
 
-    # 2. If not found in the database, search in the Spoonacular API
+    # Buscar hasta 3 recetas similares en la API
     search_url = f"{BASE_URL}/recipes/complexSearch"
     search_params = {
         "query": title,
-        "number": number,
+        "number": 3,
         "apiKey": API_KEY,
     }
 
     search_response = requests.get(search_url, params=search_params)
-
     if search_response.status_code != 200 or not search_response.json().get("results"):
         raise HTTPException(status_code=500, detail="Error fetching data from API")
 
-    # Getting the recipe ID from the first result
-    first_result = search_response.json()["results"][0]
+    results = search_response.json()["results"]
+    if not results:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+
+    # Guardar la primera receta como base
+    first_result = results[0]
     spoonacular_id = first_result["id"]
     title = first_result["title"]
     image = first_result["image"]
 
-    # Verify if the recipe already exists in the database
     existing_recipe = db.query(Recipe).filter(Recipe.spoonacular_id == spoonacular_id).first()
     if existing_recipe:
         recipe = existing_recipe
     else:
-        # Save in the database if not exists
         recipe = Recipe(
             spoonacular_id=spoonacular_id,
             title=title,
@@ -198,43 +198,54 @@ def get_similar_recipes(
         db.commit()
         db.refresh(recipe)
 
-    # Get similar recipes in the Spoonacular API
-    similar_url = f"{BASE_URL}/recipes/{spoonacular_id}/similar"
-    similar_params = {
-        "number": number,
-        "apiKey": API_KEY,
-    }
-
-    response = requests.get(similar_url, params=similar_params)
-
-    if response.status_code != 200:
-        raise HTTPException(status_code=500, detail="Error fetching data from API")
-
-    similar_data = response.json()
-
-    if not similar_data:
-        raise HTTPException(status_code=404, detail="No similar recipes found")
-
-    # Save similar recipes in the database
+    # Buscar similares de hasta 3 recetas base
     similar_recipes_list = []
-    for item in similar_data:
-        similar_recipe = SimilarRecipe(
-            recipe_id=recipe.id,
-            similar_recipe_id=item["id"],
-            title=item["title"],
-            image=item["image"],
-        )
-        db.add(similar_recipe)
+    seen_ids = set()
 
-        similar_recipes_list.append(SimilarRecipesSchema(
-            similar_spoonacular_id=item["id"],
-            title=item["title"],
-            image=item["image"],
-        ))
+    for result in results:
+        base_id = result["id"]
+        similar_url = f"{BASE_URL}/recipes/{base_id}/similar"
+        similar_params = {
+            "number": number,
+            "apiKey": API_KEY,
+        }
+        response = requests.get(similar_url, params=similar_params)
+        if response.status_code != 200:
+            continue
+        similar_data = response.json()
+
+        for item in similar_data:
+            if item["id"] in seen_ids:
+                continue
+            seen_ids.add(item["id"])
+
+            image_url = f"https://spoonacular.com/recipeImages/{item['id']}-312x231.jpg"
+
+            # Guardar en la BD
+            similar_recipe = SimilarRecipe(
+                recipe_id=recipe.id,
+                similar_recipe_id=item["id"],
+                title=item["title"],
+                image=image_url,
+            )
+            db.add(similar_recipe)
+
+            similar_recipes_list.append(SimilarRecipesSchema(
+                similar_spoonacular_id=item["id"],
+                title=item["title"],
+                image=image_url,
+            ))
+
+            if len(similar_recipes_list) >= number:
+                break
+        if len(similar_recipes_list) >= number:
+            break
+
+    if not similar_recipes_list:
+        raise HTTPException(status_code=404, detail="No similar recipes found")
 
     db.commit()
 
-    # Return similar recipes
     return RecipesWithSimilarSchema(
         spoonacular_id=recipe.spoonacular_id,
         title=recipe.title,
@@ -242,6 +253,7 @@ def get_similar_recipes(
         ingredients=recipe.ingredients,
         similar_recipes=similar_recipes_list
     )
+
 
     #       ------------------      Endpoint to get random recipes for SpoonacularAPI | Random recipes       ------------------      
 
@@ -300,3 +312,20 @@ def get_random_recipes(
         saved_recipes.append(recipe)
 
     return saved_recipes
+
+@router.get("/recipe_info/{spoonacular_id}")
+def get_recipe_info(
+    spoonacular_id: int,
+    db: Session = Depends(get_db)
+):
+    url = f"{BASE_URL}/recipes/{spoonacular_id}/information"
+    params = {
+        "includeNutrition": True,
+        "apiKey": API_KEY,
+    }
+
+    response = requests.get(url, params=params)
+    if response.status_code != 200:
+        raise HTTPException(status_code=500, detail="Error fetching data from API")
+    
+    return response.json()
