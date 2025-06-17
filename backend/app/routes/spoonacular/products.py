@@ -17,7 +17,7 @@ router = APIRouter(
 API_KEY = os.getenv("SPOONACULAR_API_KEY")
 BASE_URL = "https://api.spoonacular.com"
 
-# Endpoint to get information 'bout products for SpoonacularAPI | User search by product (MAYBE)
-@router.get("/products")
-def get_products_by_title():
-   return {"message": "Product search endpoint"}
+# # Endpoint to get information 'bout products for SpoonacularAPI | User search by product (MAYBE)
+# @router.get("/products")
+# def get_products_by_title():
+#    return {"message": "Product search endpoint"}

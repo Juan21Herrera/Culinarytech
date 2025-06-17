@@ -19,9 +19,9 @@ BASE_URL = "https://api.spoonacular.com"
 
 
 # Endpoint to get meal plan templates | User select any recipes and add to list for weekly meal plan
-@router.get("/menu")
-def get_meal_plan():
-    return {"message": "Meal plan endpoint"}
+# @router.get("/menu")
+# def get_meal_plan():
+#     return {"message": "Meal plan endpoint"}
 
 # Endpoint to generate shopping list | User select any recipes and add to list for shopping list
 

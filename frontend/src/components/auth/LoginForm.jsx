@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/AuthContext';
 
 export default function LoginForm() {
   const navigate = useNavigate();

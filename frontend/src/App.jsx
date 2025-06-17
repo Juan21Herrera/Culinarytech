@@ -1,30 +1,27 @@
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
+
+// Layout
+import Layout from './layout/Layout';
+
+// Pages 
+import Home from './pages/Home';
+import Recipes from './pages/Recipes';
+import Ingredients from './pages/Ingredients';
+import Fridge from './pages/Fridge';
+
+// Auth
 import Login from './pages/user/Login';
 import Register from './pages/user/Register';
-import Forgot from './pages/user/Forgot';
-import Home from './pages/Home';
+
+// User
 import Profile from './pages/user/Profile';
-import Fridge from './pages/Fridge';
-import Ingredients from './pages/Ingredients';
-import Recipes from './pages/Recipes';
-import Shop from './pages/Shop';
-import RecipesView from './pages/RecipesView';
 
 
 function App() {
   return (
     <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot" element={<Forgot />} />
-      <Route path='/profile' element= {<Profile />}/>
-      <Route path='/fridge' element= {<Fridge />}/>
-      <Route path='/only-ingredients' element={<Ingredients />} />
-      <Route path='/recipes' element={<Recipes />}/>
-      <Route path="/recipess" element={<RecipesView />} />
-      <Route path='/shopping' element={<Shop />}/>
+
     </Routes>
   );
 }

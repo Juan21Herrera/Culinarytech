@@ -16,20 +16,11 @@ app = FastAPI()
 app.include_router(user.router)
 app.include_router(recipes.router)
 app.include_router(ingredients.router)
-app.include_router(products.router)
-app.include_router(menu.router)
-app.include_router(wine.router)
+# app.include_router(products.router)
+# app.include_router(menu.router)
+# app.include_router(wine.router)
 
 
-# Welcome route
-@app.get("/")
-def welcome_root():
-    return {"Respuesta": "Esta funcionando"}
-
-
-origins = [
-    "http://localhost:5173",  # Agrega aquí la URL de tu frontend
-]
 
 app.add_middleware(
     CORSMiddleware,
