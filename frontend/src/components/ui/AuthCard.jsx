@@ -1,6 +1,6 @@
-import React from 'react';
-import Navbar from '../static/Navbar';
-import Footer from '../static/Footer';
+
+import Navbar from "../../layout/static/Navbar";
+import Footer from "../../layout/static/Footer";
 
 const AuthCard = ({ children, showRightSection = true }) => {
     return (

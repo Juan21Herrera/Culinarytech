@@ -1,8 +1,7 @@
 // src/pages/user/Profile.jsx
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/static/Navbar";
-import Footer from "../../components/static/Footer";
+
 import {
   FaFacebook,
   FaUserCircle,
@@ -24,8 +23,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="pt-10 flex flex-col bg-gradient-to-br from-[#FFFACD] to-[#D4ECDD] min-h-screen">
-      <Navbar />
+    <div>
       <main className="flex-grow">
         <div className="max-w-6xl mx-auto mt-20 mb-20 p-10">
           <div className="grid grid-cols-3 grid-rows-6 gap-4 h-140">
@@ -82,7 +80,6 @@ export default function Profile() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

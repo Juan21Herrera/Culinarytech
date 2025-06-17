@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/AuthContext';
 import { FaUserCircle } from 'react-icons/fa';
 
 const Navbar = () => {
@@ -10,7 +10,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/"); // O a donde quieras redirigir
+    navigate("/");
   };
 
   return (
@@ -20,9 +20,9 @@ const Navbar = () => {
           CulinaryTech
         </Link>
 
-        <div className="flex items-center space-x-4 hidden md:flex">
+        <div className="flex items-center space-x-4 md:flex">
           <Link to="/fridge" className="hover:text-gray-500 transition">What's in your fridge?</Link>
-          <Link to="/only-ingredients" className="hover:text-gray-500 transition">Ingredients</Link>
+          <Link to="/ingredients" className="hover:text-gray-500 transition">Ingredients</Link>
           <Link to="/recipes" className="hover:text-gray-500 transition">Recipes</Link>  
 
           {user ? (
