@@ -18,28 +18,9 @@ import Register from './pages/user/Register';
 import Profile from './pages/user/Profile';
 
 
-
 function App() {
   return (
     <Routes>
-
-      {/* Auth */}
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
-
-      {/* Main routes */}
-        <Route path='/' element={<Layout><Home /></Layout>} />
-        <Route path='/recipes' element={<Layout><Recipes /></Layout>} />
-        <Route path='/ingredients' element={<Layout><Ingredients /></Layout>} />
-        <Route path='/fridge' element={<Layout><Fridge /></Layout>} />
-
-
-      {/* User */}
-      <Route path='/profile' element={<Layout><Profile /></Layout>} />
-      
-
-
-
 
     </Routes>
   );
